@@ -1,0 +1,717 @@
+/* ── CSS Variables ── */
+.container {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --primary-border: #bfdbfe;
+  --danger: #dc2626;
+  --danger-light: #fef2f2;
+  --danger-border: #fecaca;
+  --warn: #d97706;
+  --warn-light: #fffbeb;
+  --warn-border: #fde68a;
+  --success: #2563eb;
+  --success-light: #eff6ff;
+  --success-border: #bfdbfe;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --bg-page: #f8faf9;
+  --bg-card: #ffffff;
+  --border-color: #e5e7eb;
+  --border-radius: 14px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.10);
+
+  min-height: 100vh;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px 20px 80px;
+}
+
+/* ── 전체 페이지 2컬럼 그리드 ── */
+.pageGrid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── 메인 컬럼 (계산기 + 교육콘텐츠 + 포스트 전체) ── */
+.mainCol {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  /* 사이드바가 이 높이 전체를 따라다님 */
+  min-height: 100%;
+}
+
+.calcHeader {
+  margin-bottom: 2px;
+}
+
+.headerBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Rate bar ── */
+.rateBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.ratePill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 8px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  white-space: nowrap;
+  text-align: center;
+}
+.ratePillLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+.ratePillValue {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.3px;
+}
+.ratePillSub {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.rateLoading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.rateError {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--danger);
+  font-size: 13px;
+  padding: 8px 12px;
+  background: var(--danger-light);
+  border-radius: 8px;
+}
+
+/* ── Calc card ── */
+.calcCard {
+  background: white;
+  border: 2px solid var(--primary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+}
+
+/* ── 사이드바: pageGrid 안에서 sticky → 페이지 전체를 따라다님 ── */
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: sticky;
+  top: 74px;          /* 네비 높이(56px) + 여백 */
+  align-self: start;  /* ← 이게 핵심: grid 셀 안에서 높이를 내용에 맞게 고정 */
+}
+
+.infoCard {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.infoCardTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+}
+
+.formulaList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.formulaList li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.formulaList li strong {
+  color: var(--text-primary);
+}
+
+.infoTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.infoTable td {
+  padding: 6px 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+.infoTable tr:last-child td { border-bottom: none; }
+.infoTable td:first-child { font-weight: 600; color: var(--text-primary); }
+
+.ctaCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--primary-light);
+  border: 1.5px solid var(--primary-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s;
+}
+.ctaCard:hover { background: #dbeafe; }
+
+/* ── Form ── */
+.formGroup { margin-bottom: 16px; }
+.formGroup:last-child { margin-bottom: 0; }
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 7px;
+}
+
+.input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 15px;
+  color: var(--text-primary);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+}
+.input::placeholder { color: var(--text-muted); }
+
+.select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 15px;
+  color: var(--text-primary);
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.select:focus { border-color: var(--primary); }
+
+/* ── Radio Group ── */
+.radioGroup {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.radioOption {
+  flex: 1;
+  min-width: 100px;
+}
+
+.radioInput { display: none; }
+
+.radioLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 8px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  text-align: center;
+  gap: 2px;
+}
+.radioLabel span {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.radioInput:checked + .radioLabel {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.radioInput:checked + .radioLabel span { color: var(--primary); opacity: 0.8; }
+.radioLabel:hover { border-color: var(--primary); background: var(--primary-light); }
+
+/* ── Result ── */
+.resultBox {
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 12px;
+}
+
+.resultBoxFree {
+  background: var(--success-light);
+  border: 1.5px solid var(--success-border);
+}
+
+.resultBoxTaxed {
+  background: #fff;
+  border: 1.5px solid var(--border-color);
+}
+
+.resultTitle {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.resultRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  min-height: 38px;
+}
+
+.resultRowLabel { color: var(--text-secondary); font-weight: 500; }
+.resultRowNote { font-size: 10px; color: var(--text-muted); font-weight: 400; line-height: 1.4; }
+.resultRowLabelBold { color: var(--text-primary); font-weight: 700; }
+.resultRowValue { font-weight: 600; color: var(--text-primary); font-size: 13px; text-align: right; }
+.resultRowValueHighlight { font-weight: 800; color: var(--primary); font-size: 17px; }
+.resultRowValueDanger { font-weight: 700; color: var(--danger); font-size: 13px; text-align: right; }
+
+/* ── Result Hero ── */
+.resultHeroFree,
+.resultHeroTaxed {
+  text-align: center;
+  padding: 18px 16px 14px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+.resultHeroFree {
+  background: var(--success-light);
+  border: 1px solid var(--success-border);
+}
+.resultHeroTaxed {
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+}
+.resultHeroLabel {
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+.resultHeroAmount {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+  line-height: 1.15;
+}
+.resultHeroSub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+/* ── Result Divider ── */
+.resultDivider {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin: 2px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+.resultDivider::before,
+.resultDivider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+/* ── Tax section ── */
+.resultTaxSection {
+  background: #fff8f8;
+  border-radius: 8px;
+  padding: 2px 10px;
+  margin-top: 6px;
+  border: 1px solid #fecaca;
+}
+
+.emptyResult {
+  margin-top: 12px;
+  padding: 16px;
+  background: var(--bg-page);
+  border: 1px dashed var(--border-color);
+  border-radius: 10px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ── Vitamin warning ── */
+.vitaminWarning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--warn-light);
+  border: 1px solid var(--warn-border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #92400e;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* ── Step Badge ── */
+.stepBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* ── 관세란? 미니 섹션 ── */
+.whatIsCard {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.whatIsTitle {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+
+.whatIsDesc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin: 0 0 14px;
+}
+
+.whatIsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.whatIsItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-page);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.whatIsItemIcon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.whatIsItemTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+}
+
+.whatIsItemDesc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Guide Section ── */
+.guideSection {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  padding: 36px 32px;
+  margin-top: 32px;
+}
+
+.guideSection h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.guideSection h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 22px 0 8px;
+}
+
+.guideSection p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin: 0 0 12px;
+}
+
+.guideCallout {
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-page);
+  margin: 14px 0;
+}
+
+.guideCallout h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 28px 0;
+}
+
+/* ── Card (used in sub-pages) ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 16px;
+}
+
+/* ── Rate Grid (sub-pages) ── */
+.rateGrid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rateBadge {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px;
+  background: var(--bg-page);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  flex: 1;
+  min-width: 100px;
+}
+
+.rateCurrency {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.rateValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Blog ── */
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.postCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.postCard:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.postCategory {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.postTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.postSummary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.postDate {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: auto;
+}
+
+/* ── header / header (sub-pages) ── */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .pageGrid {
+    grid-template-columns: 1fr;
+  }
+  .infoCol {
+    position: static;    /* 모바일에서는 sticky 해제 */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .rateBar { grid-template-columns: repeat(2, 1fr); }
+  .title { font-size: 22px; }
+  .guideSection { padding: 22px 16px; }
+  .wrapper { padding: 20px 16px 60px; }
+  .radioGroup { gap: 6px; }
+  .radioOption { min-width: 80px; }
+  .infoCol { grid-template-columns: 1fr; }
+}
