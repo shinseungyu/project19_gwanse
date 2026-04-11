@@ -81,6 +81,9 @@ export const metadata: Metadata = {
   },
   verification: {
     // google: '여기에_구글_인증코드_입력',
+    other: {
+      "naver-site-verification": "c09b161549d9aa41f1dbb38852ef5298de7868b0",
+    },
   },
   icons: {
     icon: "/favicon.ico",
