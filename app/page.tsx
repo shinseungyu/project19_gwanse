@@ -58,24 +58,24 @@ export default function HomePage() {
 
   const MAIN_FAQS = [
     {
-      q: "해외직구 면세 한도는 얼마인가요?",
-      a: "미국에서 출발한 물건은 USD $200 이하면 면세입니다. 일본·중국·유럽 등 기타 국가는 USD $150 이하가 면세 기준입니다. 면세 한도는 물건 가격 + 배송비를 합산한 금액 기준이며, 일본·중국은 현지 통화를 USD로 환산해서 비교합니다.",
+      q: "달러가 아닌 엔화나 위안화로 결제하면 어떻게 계산하나요?",
+      a: "세관에서는 물건이 한국에 도착하는 날(입항일)의 '과세환율'을 기준으로 모든 금액을 확인합니다. 본 계산기에서 출발 국가를 일본이나 중국으로 선택하시면 현지 통화로 편리하게 입력하면서 예상되는 달러 환산액을 미리 확인할 수 있습니다.",
     },
     {
-      q: "합산과세란 무엇이고, 어떻게 피하나요?",
-      a: "합산과세는 같은 나라에서 출발한 물건 2개 이상이 같은 날 한국에 도착하면, 세관이 모든 금액을 합산해 과세하는 제도입니다. 각각 면세 한도 이내라도 합산하면 초과할 수 있습니다.\n피하는 방법: ① 첫 번째 물건이 통관 완료된 후 다음 물건 배송 ② 출발 국가를 다르게 구매 ③ 수취인 정보(가족 명의) 활용",
+      q: "배대지(배송대행지) 요금도 세금 부과 기준(과세가격)에 포함되나요?",
+      a: "아닙니다. 면세 한도($150 또는 $200)를 계산할 때나 세금을 책정할 때, 배대지에 지불하는 국제 배송비는 포함되지 않습니다. 오직 해외 쇼핑몰에 지불한 총 금액(물건값 + 현지 배송비 + 현지 세금)이 기준이 됩니다.",
     },
     {
-      q: "일본 직구 관세는 어떻게 계산되나요?",
-      a: "일본 직구는 엔화(JPY) 가격을 당일 USD 환율로 환산해 $150 초과 여부를 판단합니다. $150을 초과하면 관세(의류 13%, 화장품 6.5%, 전자제품 0%, 기타 8%) + 부가세 10%가 부과됩니다. 위 계산기에 엔화 금액을 입력하면 자동으로 계산됩니다.",
+      q: "목록통관과 일반통관의 차이가 무엇인가요?",
+      a: "목록통관은 의류, 신발 등 위험성이 낮은 물품을 서류만으로 빠르게 통관시키는 제도입니다(미국 $200 면세). 일반통관은 영양제, 의약품, 식품 등 세관의 직접 확인이 필요한 품목으로, 전 세계 어디서 오든 무조건 $150가 면세 한도입니다. 일반통관 품목이 하나라도 섞여 있다면 전체 택배가 일반통관($150 한도)으로 취급되니 주의하세요.",
     },
     {
-      q: "전자제품(스마트폰, 노트북)은 관세가 없나요?",
-      a: "스마트폰·노트북·태블릿 등 주요 전자제품은 관세율이 0%입니다. 단, 면세 한도($150 또는 $200)를 초과하면 관세(0%) + 부가세(10%)가 부과됩니다. 즉 관세는 없지만 부가세 10%는 납부해야 합니다.",
+      q: "향수를 직구할 때 세금은 어떻게 되나요?",
+      a: "향수는 용량에 따라 면세 여부가 완전히 달라집니다. 총 결제 금액이 면세 한도($150~$200) 이내이면서 향수의 총 용량이 60ml 이하라면 관세·부가세·개별소비세가 모두 면제됩니다. 하지만 60ml를 조금이라도 초과하면 전체 금액에 대해 높은 세율이 부과되므로 각별히 주의해야 합니다.",
     },
     {
-      q: "영양제·비타민을 많이 사면 안 되나요?",
-      a: "영양제·건강보조제는 6병(개) 이하면 목록통관(간편 통관)으로 빠르게 수령할 수 있습니다. 7병 이상부터는 일반통관 대상이 되어 세관 신고 서류 제출이 필요하고 통관이 지연될 수 있습니다.",
+      q: "세금을 피하려고 박스를 두 개로 나눠서(분할 배송) 보내면 괜찮을까요?",
+      a: "절대 추천하지 않습니다. 세관에서는 같은 목적지, 같은 수취인으로 여러 박스가 며칠 간격으로 들어와도 이를 동일한 주문으로 간주해 합산과세 처분을 내릴 확률이 매우 높습니다. 세금 납부는 물론 통관 지연까지 발생할 수 있으니, 한 번에 정상적으로 결제하는 것이 가장 안전하고 빠릅니다.",
     },
   ];
 
@@ -344,6 +344,17 @@ export default function HomePage() {
                 ════════════════════════════════ */}
             <article className={styles.guideSection}>
 
+              {/* 가이드 인트로 */}
+              <section style={{ marginBottom: 32, padding: "18px 22px", background: "var(--primary-light)", border: "1.5px solid var(--primary-border)", borderRadius: 14 }}>
+                <p style={{ margin: 0, fontSize: 14, color: "var(--text-primary)", lineHeight: 1.85 }}>
+                  아마존, 이베이, 알리익스프레스, 테무 등 글로벌 쇼핑몰에서 마음에 드는 상품을 발견했을 때,
+                  결제 금액 외에 추가로 납부해야 하는 세금을 미리 모르면 예상치 못한 세금 고지서를 받고 당황하는 상황이 생깁니다.
+                  특히 면세 한도($150~$200)를 조금만 초과해도 관세와 부가세가 한꺼번에 부과되기 때문에,
+                  <strong> 사전에 정확히 계산해보는 습관</strong>이 절약의 핵심입니다.
+                  아래 가이드에서 관세·부가세의 차이, 국가별 면세 한도, 합산과세 주의사항까지 핵심만 정리해 드립니다.
+                </p>
+              </section>
+
               {/* ① 관세 vs 부가세 차이 */}
               <section style={{ marginBottom: 40 }}>
                 <h2>🧾 관세 vs 부가세 — 무엇이 다른가요?</h2>
@@ -432,6 +443,41 @@ export default function HomePage() {
                       <div>
                         <p style={{ margin: "0 0 3px", fontWeight: 700, fontSize: 14, color: "var(--text-primary)" }}>{item.label}</p>
                         <p style={{ margin: 0, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <hr className={styles.divider} />
+
+              {/* ② -1 과세가격(CIF) */}
+              <section style={{ marginBottom: 40 }}>
+                <h2>💰 세금의 기준 &apos;과세가격(CIF)&apos;이란?</h2>
+                <p>
+                  많은 분이 물건값만 생각하시지만, 관세청이 기준으로 삼는 금액은 단순 상품가가 아닙니다.
+                  <strong> 물품 가액 + 현지 배송비 + 현지 세금(Sales Tax) + 선편요금</strong>을 모두 합한 값이 과세가격(CIF)이 됩니다.
+                </p>
+                <div style={{ background: "#fefce8", border: "1.5px solid #fde68a", borderRadius: 12, padding: "16px 20px", marginBottom: 16 }}>
+                  <p style={{ margin: "0 0 8px", fontWeight: 800, fontSize: 14, color: "#92400e" }}>⚠️ 주의 — 관세청 고시 선편요금이 따로 추가됩니다</p>
+                  <p style={{ margin: 0, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.75 }}>
+                    실제 내가 낸 배송비가 아닌 <strong>관세청 고시 무게별 선편요금</strong>이 더해질 수 있습니다.
+                    배대지(배송대행지)를 이용하거나 무료배송 상품을 구매해도 과세가격에 선편요금이 가산될 수 있으니,
+                    위의 관세계산기에 배송비까지 포함해 입력해야 정확한 세금을 확인할 수 있습니다.
+                  </p>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {[
+                    { label: "물품 가액", desc: "해외 쇼핑몰 결제 금액 (할인·쿠폰 적용 후 금액 기준)" },
+                    { label: "현지 배송비", desc: "판매자 창고 → 배대지 또는 직배송지까지의 배송비. 과세가격에 포함됩니다." },
+                    { label: "현지 세금 (Sales Tax)", desc: "미국 일부 주에서 부과되는 판매세. 환급이 안 되며 과세가격에 합산됩니다." },
+                    { label: "선편요금 (관세청 고시)", desc: "중량 기준 관세청 고시 요금. 실제 배송비와 다를 수 있어 계산기 입력 시 유의하세요.", highlight: true },
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: "flex", gap: 14, padding: "11px 16px", background: item.highlight ? "#fff7ed" : "var(--bg-page)", borderRadius: 10, border: `1px solid ${item.highlight ? "#fed7aa" : "var(--border-color)"}` }}>
+                      <span style={{ fontWeight: 800, fontSize: 14, color: "var(--primary)", minWidth: 18 }}>+</span>
+                      <div>
+                        <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 13, color: "var(--text-primary)" }}>{item.label}</p>
+                        <p style={{ margin: 0, fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.6 }}>{item.desc}</p>
                       </div>
                     </div>
                   ))}
