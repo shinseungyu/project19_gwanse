@@ -177,7 +177,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <p className="text-xs text-gray-400">
                 © 2026 gwanse.kr · 문의: contact@gwanse.kr
               </p>
-              <nav className="flex gap-4">
+              <nav className="flex flex-wrap gap-4">
+                <Link href="/about" className="text-xs text-gray-400 hover:text-gray-600">사이트 소개</Link>
+                <Link href="/contact" className="text-xs text-gray-400 hover:text-gray-600">연락처</Link>
                 <Link href="/privacy-policy" className="text-xs text-gray-400 hover:text-gray-600">개인정보 처리방침</Link>
                 <Link href="/terms-of-service" className="text-xs text-gray-400 hover:text-gray-600">이용약관</Link>
                 <Link href="/cookie-policy" className="text-xs text-gray-400 hover:text-gray-600">쿠키 정책</Link>

@@ -2,72 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 import postsData from "@/data/posts.json";
 import styles from "../page.module.css";
 
-function BoardContent() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+export default function BoardPage() {
   const [search, setSearch] = useState("");
-
-  if (id) {
-    const post = postsData.find((p) => p.id === Number(id));
-    if (!post) return (
-      <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <p style={{ color: "var(--text-secondary)" }}>게시글을 찾을 수 없습니다.</p>
-          <Link href="/board" style={{ color: "var(--primary)", fontWeight: 700 }}>← 목록으로</Link>
-        </div>
-      </div>
-    );
-    const otherPosts = postsData.filter((p) => p.id !== post.id).slice(0, 4);
-    return (
-      <div className={styles.container}>
-        <div className={styles.wrapper} style={{ maxWidth: 720 }}>
-          <Link href="/board" style={{ fontSize: 13, color: "var(--primary)", textDecoration: "none", fontWeight: 600, display: "inline-block", marginBottom: 24 }}>
-            ← 목록으로
-          </Link>
-          <article className={styles.card}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{post.category}</span>
-            <h1 style={{ fontSize: 22, fontWeight: 800, margin: "10px 0 8px", lineHeight: 1.4 }}>{post.title}</h1>
-            <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 24 }}>📅 {post.date}</p>
-            <div style={{ fontSize: 15, color: "var(--text-secondary)", lineHeight: 1.85, whiteSpace: "pre-line" }}>
-              {post.content}
-            </div>
-            {post.tags && (
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 24, paddingTop: 16, borderTop: "1px solid var(--border-color)" }}>
-                {post.tags.map((tag) => (
-                  <span key={tag} style={{ fontSize: 12, padding: "4px 10px", background: "var(--primary-light)", color: "var(--primary)", borderRadius: 100, fontWeight: 600 }}>
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            )}
-          </article>
-
-          {/* 다른 글 보기 */}
-          {otherPosts.length > 0 && (
-            <section style={{ marginTop: 32 }}>
-              <h2 style={{ fontSize: 15, fontWeight: 800, marginBottom: 12, color: "var(--text-primary)" }}>다른 글 보기</h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {otherPosts.map((p) => (
-                  <Link key={p.id} href={`/board?id=${p.id}`} style={{ textDecoration: "none", display: "block", padding: "14px 16px", background: "white", border: "1px solid var(--border-color)", borderRadius: 10 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: "var(--primary)", textTransform: "uppercase" }}>{p.category}</span>
-                    <p style={{ margin: "5px 0 0", fontSize: 14, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4 }}>{p.title}</p>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
-      </div>
-    );
-  }
+  const [activeCategory, setActiveCategory] = useState("전체");
 
   const categories = ["전체", ...Array.from(new Set(postsData.map((p) => p.category)))];
-  const [activeCategory, setActiveCategory] = useState("전체");
 
   const filtered = postsData.filter((p) => {
     const matchSearch = p.title.includes(search) || p.summary.includes(search) || p.category.includes(search);
@@ -124,7 +66,7 @@ function BoardContent() {
             {filtered.map((post) => (
               <Link
                 key={post.id}
-                href={`/board?id=${post.id}`}
+                href={`/board/${post.id}`}
                 style={{ textDecoration: "none", display: "block" }}
               >
                 <div
@@ -162,13 +104,5 @@ function BoardContent() {
         )}
       </div>
     </div>
-  );
-}
-
-export default function BoardPage() {
-  return (
-    <Suspense fallback={<div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)" }}>로딩 중...</div>}>
-      <BoardContent />
-    </Suspense>
   );
 }
