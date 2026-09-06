@@ -103,72 +103,73 @@ const jsonLd = {
   operatingSystem: "Web",
   offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
   inLanguage: "ko",
-  featureList: "관세 자동 계산, 부가세 계산, 국가별 면세 한도 안내, 실시간 환율 반영, 면세점 관세 계산, 합산과세 체크",
+  featureList: [
+    "관세 자동 계산",
+    "부가세 계산",
+    "국가별 면세 한도 안내",
+    "실시간 환율 반영",
+    "면세점 관세 계산",
+    "합산과세 체크",
+  ],
 };
 
-const faqJsonLd = {
+const orgJsonLd = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "일본 직구 관세 면세 한도는 얼마인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "일본을 포함한 미국 외 국가에서의 해외직구는 물건값 기준 $150 이하면 관세가 면제됩니다. $150를 초과하면 품목에 따라 관세(8~13%)와 부가세(10%)가 부과됩니다. 단, 미국 직구 목록통관 품목은 $200까지 면세입니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "면세점에서 구입한 물건도 관세가 부과되나요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "해외 면세점에서 구입하더라도 귀국 시 면세 한도($800)를 초과하면 국내 세관에서 관세가 부과됩니다. 면세점 구매 금액과 기타 해외 구매 금액을 합산해 $800을 초과하는 부분에 세금이 매겨집니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "합산과세란 무엇인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "합산과세는 동일인이 같은 날 여러 해외 주문이 동시에 입항할 경우 금액을 합산해 면세 한도 초과 여부를 판단하는 제도입니다. 각각은 면세 금액 이하라도 합산 시 $150를 초과하면 전체에 관세가 부과될 수 있습니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "알리익스프레스·테무에서 구매하면 관세가 붙나요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "알리익스프레스, 테무 등 중국 플랫폼은 $150 이하일 경우 면세입니다. $150 초과 시 품목에 따라 관세(8~13%)와 부가세(10%)가 부과됩니다. 여러 건을 같은 날 주문해 동시에 입항하면 합산과세 대상이 될 수 있어 주의가 필요합니다.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "목록통관과 일반통관의 차이가 무엇인가요?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "목록통관은 의류, 신발 등 위험성이 낮은 물품을 서류만으로 빠르게 통관시키는 제도입니다(미국 $200 면세). 일반통관은 영양제, 의약품, 식품 등 세관의 직접 확인이 필요한 품목으로, 전 세계 어디서 오든 무조건 $150가 면세 한도입니다. 일반통관 품목이 하나라도 섞여 있다면 전체 택배가 일반통관($150 한도)으로 취급됩니다.",
-      },
-    },
-  ],
+  "@type": "Organization",
+  name: "관세계산기",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://gwanse.kr",
+  logo: {
+    "@type": "ImageObject",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://gwanse.kr"}/thumb.webp`,
+    width: 1200,
+    height: 630,
+  },
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "관세계산기",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://gwanse.kr",
+  inLanguage: "ko",
+  publisher: {
+    "@type": "Organization",
+    name: "관세계산기",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://gwanse.kr",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" className={notoSansKR.variable}>
-      <head>
-        <Script
-          id="json-ld"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <Script
-          id="faq-json-ld"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
-      </head>
       <body className="min-h-screen bg-[#f8faf9] text-[#111827] font-sans antialiased">
+        {/*
+          JSON-LD 는 next/script 가 아니라 일반 <script> 로 넣는다.
+          next/script 로 넣으면 서버 HTML 에는 self.__next_s.push(...) 형태로만 나가고
+          실제 ld+json 태그는 하이드레이션 이후에 주입돼서,
+          JS 를 거의 렌더하지 않는 크롤러(네이버 등)와 스키마 검증 도구가 이를 못 본다.
+
+          FAQPage 는 여기(전역)에서 제거했다. 화면에 보이지 않는 Q&A 5개가
+          모든 페이지에 붙어 있었고, 홈·QnA 페이지의 실제 내용과도 달랐다.
+          지금은 각 페이지가 자기 화면에 실제로 보이는 Q&A 로 FAQPage 를 만든다.
+        */}
+        {[jsonLd, orgJsonLd, siteJsonLd].map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))}
+        {/*
+          google-adsense-account 메타태그와 ads.txt 는 있었지만 정작 광고 로더 스크립트가 없었다.
+          (외부 스크립트는 next/script 를 쓰는 게 맞다 — JSON-LD 와 달리 실제로 로드돼야 하는 자원)
+        */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5378247298190063"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <NavBar />
         <main>{children}</main>
         <footer className="mt-16 border-t border-gray-100 bg-white py-8">

@@ -79,9 +79,23 @@ export default function HomePage() {
     },
   ];
 
+  const mainFaqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: MAIN_FAQS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(mainFaqLd) }}
+        />
 
         {/* ══════════════════════════════════════════
             전체 페이지 레이아웃: [메인] | [사이드바]
@@ -703,7 +717,7 @@ export default function HomePage() {
                 </div>
                 <div className={styles.postGrid}>
                   {recentPosts.map((post) => (
-                    <Link key={post.id} href={`/board?id=${post.id}`} className={styles.postCard}>
+                    <Link key={post.id} href={`/board/${post.id}`} className={styles.postCard}>
                       <span className={styles.postCategory}>{post.category}</span>
                       <span className={styles.postTitle}>{post.title}</span>
                       <span className={styles.postSummary}>{post.summary}</span>

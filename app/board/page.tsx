@@ -4,6 +4,38 @@ import { useState } from "react";
 import Link from "next/link";
 import postsData from "@/data/posts.json";
 import styles from "../page.module.css";
+import { lastModifiedOf } from "@/lib/article";
+import { SITE_NAME, SITE_URL, breadcrumbLd } from "@/lib/seo";
+
+// 목록용 구조화 데이터. 레이아웃에 두면 /board/[id] 개별 글에도 상속돼
+// Article 과 CollectionPage 가 한 페이지에 같이 선언되므로 목록 페이지에서만 렌더한다.
+// ItemList 의 url 이 예전 쿼리 주소(/board?id=N)로 남아 있어
+// 구글에 같은 목록 페이지를 가리키는 URL 16개가 중복으로 신고되고 있었다.
+const itemListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "해외직구 관세 정보 게시판",
+  description: "해외직구 관세·면세한도·절세 팁 관련 최신 정보 모음",
+  url: `${SITE_URL}/board`,
+  numberOfItems: postsData.length,
+  itemListElement: postsData.map((post, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: `${SITE_URL}/board/${post.id}`,
+    name: post.title,
+  })),
+};
+
+const collectionJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "해외직구 관세 정보 게시판",
+  description: "해외직구 관세·면세한도·절세 팁 관련 정보 모음",
+  url: `${SITE_URL}/board`,
+  inLanguage: "ko",
+  isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+  dateModified: postsData.map((p) => lastModifiedOf(p)).sort().reverse()[0],
+};
 
 export default function BoardPage() {
   const [search, setSearch] = useState("");
@@ -20,6 +52,13 @@ export default function BoardPage() {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
+        {[collectionJsonLd, itemListJsonLd, breadcrumbLd([{ name: "관세 정보 게시판", path: "/board" }])].map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))}
         <header className={styles.header}>
           <span className={styles.headerBadge}>관세 정보</span>
           <h1 className={styles.title}>관세 정보 게시판</h1>

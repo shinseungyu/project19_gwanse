@@ -52,12 +52,26 @@ const FAQS = [
   },
 ];
 
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function QnaPage() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
         <header className={styles.header}>
           <span className={styles.headerBadge}>자주 묻는 질문</span>
           <h1 className={styles.title}>해외직구 관세 FAQ</h1>

@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import postsData from "@/data/posts.json";
 
 export const metadata: Metadata = {
   title: "관세 정보 게시판 — 해외직구 절세 팁 & 관세 최신 뉴스",
@@ -21,46 +19,12 @@ export const metadata: Metadata = {
   ],
 };
 
-const base = process.env.NEXT_PUBLIC_SITE_URL || "https://gwanse.kr";
-
-const itemListJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "해외직구 관세 정보 게시판",
-  description: "해외직구 관세·면세한도·절세 팁 관련 최신 정보 모음",
-  url: `${base}/board`,
-  numberOfItems: postsData.length,
-  itemListElement: postsData.map((post, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    url: `${base}/board?id=${post.id}`,
-    name: post.title,
-  })),
-};
-
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "홈", item: base },
-    { "@type": "ListItem", position: 2, name: "관세 정보 게시판", item: `${base}/board` },
-  ],
-};
-
+/**
+ * 목록용 구조화 데이터(ItemList / CollectionPage / BreadcrumbList)는 여기가 아니라
+ * app/board/page.tsx 에 있다. 이 레이아웃은 /board/[id] 개별 글에도 함께 적용되기 때문에,
+ * 여기에 두면 글 페이지가 Article 이면서 동시에 CollectionPage 로 선언되고
+ * BreadcrumbList 도 두 벌 나가서 스키마가 서로 충돌한다.
+ */
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <Script
-        id="board-itemlist-jsonld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
-      />
-      <Script
-        id="board-breadcrumb-jsonld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }
